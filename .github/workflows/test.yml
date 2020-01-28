@@ -1,0 +1,36 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run a one-line script
+      run: echo Hello, world!
+    - name: Run a multi-line script
+      run: |
+        PROJECT_DIR=$(pwd)
+        echo Add other actions to build,
+        echo test, and deploy your project.
+        sudo add-apt-repository ppa:mhier/libboost-latest
+        sudo apt update
+        sudo apt install libboost1.68-dev
+        cat /usr/include/boost/version.hpp | grep "BOOST_LIB_VERSION"
+        sudo apt-get install -y libgtest-dev
+        sudo apt-get install -y cmake
+        sudo apt-get install -y valgrind
+        cd /usr/src/gtest/
+        sudo cmake CMakeLists.txt
+        sudo make
+        sudo cp *.a /usr/lib
+        cd $PROJECT_DIR
+        mkdir build
+        cd build
+        cmake ../project/
+        make
+        valgrind tests/ut/runTests
+        python3 ../project/tests/sct/tests.py
