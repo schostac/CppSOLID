@@ -9,13 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
+    - name: Build and test
       run: |
         PROJECT_DIR=$(pwd)
-        echo Add other actions to build,
-        echo test, and deploy your project.
         sudo add-apt-repository ppa:mhier/libboost-latest
         sudo apt update
         sudo apt install libboost1.68-dev
@@ -25,12 +21,11 @@ jobs:
         sudo apt-get install -y valgrind
         cd /usr/src/gtest/
         sudo cmake CMakeLists.txt
-        sudo make
+        sudo make -j4
         sudo cp *.a /usr/lib
         cd $PROJECT_DIR
-        mkdir build
-        cd build
-        cmake ../project/
-        make
-        valgrind tests/ut/runTests
+        mkdir build && cd build
+        cmake ../project/app/
+        make -j4
+        valgrind make test
         python3 ../project/tests/sct/tests.py
