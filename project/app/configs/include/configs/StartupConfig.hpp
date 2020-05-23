@@ -1,7 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include <cstdint>
+#include <iostream>
 #include <optional>
 
 #include <boost/program_options.hpp>
@@ -10,8 +10,7 @@
 
 namespace po = boost::program_options;
 
-struct StartupConfig
-{
+struct StartupConfig {
     const std::uint16_t port;
     const types::ReportFormat format;
 };
@@ -19,10 +18,8 @@ struct StartupConfig
 std::optional<const StartupConfig> optionsToStartupConfig(int argc, char* argv[])
 {
     po::options_description desc("Allowed options");
-    desc.add_options()
-        ("help", "Produce help message")
-        ("port", po::value<std::uint16_t>(), "Set server port")
-        ("format", po::value<types::ReportFormat>(), "Set tax report format (json or xml)");
+    desc.add_options()("help", "Produce help message")("port", po::value<std::uint16_t>(), "Set server port")(
+        "format", po::value<types::ReportFormat>(), "Set tax report format (json or xml)");
 
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -33,5 +30,5 @@ std::optional<const StartupConfig> optionsToStartupConfig(int argc, char* argv[]
         return std::nullopt;
     }
 
-    return StartupConfig{vm["port"].as<std::uint16_t>(), vm["format"].as<types::ReportFormat>()};
+    return StartupConfig{ vm["port"].as<std::uint16_t>(), vm["format"].as<types::ReportFormat>() };
 }

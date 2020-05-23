@@ -2,15 +2,12 @@
 
 #include <cstdint>
 
-namespace types
-{
+namespace types {
 enum class ReportFormat;
-} // namespace
+} // namespace types
 
-namespace servers
-{
+namespace servers {
 using Port = std::uint16_t;
 
 void runServer(Port, types::ReportFormat);
 } // namespace servers
-

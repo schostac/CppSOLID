@@ -5,13 +5,8 @@
 
 #include <boost/algorithm/string.hpp>
 
-namespace types
-{
-enum class ReportFormat
-{
-  Json,
-  Xml
-};
+namespace types {
+enum class ReportFormat { Json, Xml };
 } // namespace types
 
 inline std::istream& operator>>(std::istream& in, types::ReportFormat& format)

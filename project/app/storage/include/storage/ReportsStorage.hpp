@@ -1,16 +1,12 @@
 #pragma once
 
-namespace types
-{
+namespace types {
 struct Report;
-} // namespace
+} // namespace types
 
-namespace storage
-{
-class ReportsStorage
-{
+namespace storage {
+class ReportsStorage {
 public:
     void storeReport(const types::Report&);
 };
 } // namespace storage
-
