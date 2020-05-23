@@ -3,8 +3,7 @@
 #include <array>
 #include <string>
 
-namespace constants
-{
+namespace constants {
 const std::string OK = "OK";
 const std::string NOK = "NOK";
-} // namespaces
+} // namespace constants

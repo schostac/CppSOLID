@@ -6,10 +6,14 @@
 #include "constants/Constants.hpp"
 
 namespace servers {
-ReportSession::ReportSession(tcp::socket sock, const types::ReportFormat format)
+ReportSession::ReportSession(
+    tcp::socket sock, const types::ReportFormat format, std::unique_ptr<services::ITaxService> taxService)
     : sock{ std::move(sock) }
     , format{ format }
+    , taxService{ std::move(taxService) }
 {
+    if (this->taxService == nullptr)
+        throw std::runtime_error{ "Tax service not provided" };
 }
 
 void ReportSession::start() try {
@@ -23,24 +27,10 @@ void ReportSession::start() try {
         else if (error)
             throw boost::system::system_error(error); // Some other error.
 
-        const auto response = handleRequest({ data, length });
+        const auto response = taxService->onReportRequest({ data, length }, format);
         boost::asio::write(sock, boost::asio::buffer(response.data(), response.size()));
     }
 } catch (const std::exception& e) {
     std::cerr << e.what() << "\n";
-}
-
-std::string ReportSession::handleRequest(const std::string_view request) try {
-    switch (format) {
-    case types::ReportFormat::Json:
-        return taxService.onJsonReport(request);
-    case types::ReportFormat::Xml:
-        return taxService.onXmlReport(request);
-    }
-
-    return constants::NOK;
-} catch (const std::exception& e) {
-    std::cerr << e.what() << '\n';
-    return constants::NOK;
 }
 } // namespace servers

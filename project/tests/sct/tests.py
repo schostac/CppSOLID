@@ -37,7 +37,12 @@ class JsonTaxReportTests(TestsBase, unittest.TestCase):
 
         self.sock.send(request.encode())
         response = self.sock.recv(BUFFER_SIZE)
+        self.assertEqual(response.decode(), OK)
 
+        request = json.dumps({'payer': 200, 'tax': 'Value Added Tax', 'amount': 15000, 'year': 2020})
+
+        self.sock.send(request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
         self.assertEqual(response.decode(), OK)
 
     def test_sending_tax_report_fails_due_to_missing_data(self):
