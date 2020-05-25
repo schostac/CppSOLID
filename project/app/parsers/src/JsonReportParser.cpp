@@ -13,7 +13,7 @@ std::optional<types::Report> JsonReportParser::parse(const std::string_view rawR
 
     return std::nullopt;
 } catch (const std::exception& e) {
-    std::cerr << e.what() << '\n';
+    std::cerr << __FILE__ << ' ' << e.what() << '\n';
     return std::nullopt;
 }
 } // namespace parsers

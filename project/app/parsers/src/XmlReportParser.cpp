@@ -34,7 +34,7 @@ std::optional<types::Report> XmlReportParser::parse(const std::string_view rawRe
 
     return std::nullopt;
 } catch (const std::exception& e) {
-    std::cerr << e.what() << '\n';
+    std::cerr << __FILE__ << ' ' << e.what() << '\n';
     return std::nullopt;
 }
 } // namespace parsers

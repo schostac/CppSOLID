@@ -7,6 +7,7 @@ include_directories(${GTEST_INCLUDE_DIRS})
 set(SOURCE
     JsonReportParser_tests.cpp
     XmlReportParser_tests.cpp
+    ValidatedReportParser_tests
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE})

@@ -6,12 +6,14 @@ add_subdirectory(ut)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-set(SOURCE 
+set(SOURCE
     ${PROJECT_SOURCE_DIR}/include/parsers/IReportParser.hpp
     ${PROJECT_SOURCE_DIR}/include/parsers/JsonReportParser.hpp
     ${PROJECT_SOURCE_DIR}/include/parsers/XmlReportParser.hpp
+    ${PROJECT_SOURCE_DIR}/include/parsers/ValidatedReportParser.hpp
     ${PROJECT_SOURCE_DIR}/src/XmlReportParser.cpp
     ${PROJECT_SOURCE_DIR}/src/JsonReportParser.cpp
+    ${PROJECT_SOURCE_DIR}/src/ValidatedReportParser.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCE})
