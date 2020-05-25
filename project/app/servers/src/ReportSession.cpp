@@ -4,12 +4,11 @@
 #include <stdexcept>
 
 #include "constants/Constants.hpp"
+#include "services/ITaxService.hpp"
 
 namespace servers {
-ReportSession::ReportSession(
-    tcp::socket sock, const types::ReportFormat format, std::unique_ptr<services::ITaxService> taxService)
+ReportSession::ReportSession(tcp::socket sock, std::unique_ptr<services::ITaxService> taxService)
     : sock{ std::move(sock) }
-    , format{ format }
     , taxService{ std::move(taxService) }
 {
     if (this->taxService == nullptr)
@@ -27,7 +26,7 @@ void ReportSession::start() try {
         else if (error)
             throw boost::system::system_error(error); // Some other error.
 
-        const auto response = taxService->onReportRequest({ data, length }, format);
+        const auto response = taxService->onReportRequest({ data, length });
         boost::asio::write(sock, boost::asio::buffer(response.data(), response.size()));
     }
 } catch (const std::exception& e) {

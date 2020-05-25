@@ -2,18 +2,22 @@
 
 #include "ITaxService.hpp"
 
-#include <optional>
+#include <memory>
 
 #include "storage/ReportsStorage.hpp"
-#include "types/Report.hpp"
+
+namespace parsers {
+class IReportParser;
+} // namespace parsers
 
 namespace services {
 class TaxService : public ITaxService {
 public:
-    ReportStatus onReportRequest(const std::string_view, const types::ReportFormat) override;
+    TaxService(std::unique_ptr<parsers::IReportParser>);
+    ReportStatus onReportRequest(const std::string_view) override;
 
 private:
-    ReportStatus handleReport(const std::optional<types::Report>&);
+    std::unique_ptr<parsers::IReportParser> reportParser;
     storage::ReportsStorage storage;
 };
 } // namespace services

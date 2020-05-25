@@ -68,8 +68,12 @@ class XmlTaxReportTests(TestsBase, unittest.TestCase):
     report_format = 'xml'
 
     def test_sending_tax_report_succeeds(self):
-        request = """<report><payer>100</payer><tax>Corporate Income Tax</tax>
-                        <amount>25000</amount><year>2020</year></report>"""
+        request = """<report>
+                        <payer>100</payer>
+                        <tax>Corporate Income Tax</tax>
+                        <amount>25000</amount>
+                        <year>2020</year>
+                    </report>"""
 
         self.sock.send(request.encode())
         response = self.sock.recv(BUFFER_SIZE)

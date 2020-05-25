@@ -1,80 +1,41 @@
 #include "services/TaxService.hpp"
 
 #include <gtest/gtest.h>
+#include <optional>
 #include <string>
 
+#include "ReportParserMock.hpp"
 #include "constants/Constants.hpp"
-#include "nlohmann/json.hpp"
-#include "tinyxml2/tinyxml2.h"
-#include "types/ReportFormat.hpp"
+#include "types/Report.hpp"
 
 using namespace constants;
-using json = nlohmann::json;
+using ::testing::Return;
+using ::testing::StrictMock;
 
 struct TaxServiceTests : testing::Test {
-    services::TaxService sut;
+
+    TaxServiceTests()
+    {
+        auto parserMock = std::make_unique<StrictMock<parsers::ReportParserMock>>();
+        parserMockPtr = parserMock.get();
+        sut = std::make_unique<services::TaxService>(std::move(parserMock));
+    }
+
+    StrictMock<parsers::ReportParserMock>* parserMockPtr;
+    std::unique_ptr<services::ITaxService> sut;
+
+    const std::string_view rawReport = "{}";
+    const types::Report report{ 0, "", 0, 0 };
 };
 
-struct JsonTaxServiceTests : TaxServiceTests {
-    const types::ReportFormat format = types::ReportFormat::Json;
-};
-
-TEST_F(JsonTaxServiceTests, onJsonReportRequest_whenValidData_returnsOK)
+TEST_F(TaxServiceTests, whenReportParserReturnsReport_returnOK)
 {
-    const json report = { { "payer", 1 }, { "tax", "VAT" }, { "amount", 1000 }, { "year", 2020 } };
-    ASSERT_EQ(sut.onReportRequest(to_string(report), format), OK);
+    EXPECT_CALL(*parserMockPtr, parse(rawReport)).WillOnce(Return(report));
+    ASSERT_EQ(sut->onReportRequest(rawReport), OK);
 }
 
-TEST_F(JsonTaxServiceTests, onJsonReportRequest_whenMissingFields_returnsNOK)
+TEST_F(TaxServiceTests, whenReportParserReturnsNull_returnNOK)
 {
-    const json report = { { "payer", 1 }, { "year", 2020 } };
-    ASSERT_EQ(sut.onReportRequest(to_string(report), format), NOK);
-}
-
-TEST_F(JsonTaxServiceTests, onJsonReportRequest_whenEmptyReport_returnsNOK)
-{
-    const json report = {};
-    ASSERT_EQ(sut.onReportRequest(to_string(report), format), NOK);
-}
-
-TEST_F(JsonTaxServiceTests, onJsonReportRequest_whenNumericDataInvalid_returnsNOK)
-{
-    const json report = { { "payer", "One" }, { "tax", "VAT" }, { "amount", "Ten" }, { "year", "Hundred" } };
-    ASSERT_EQ(sut.onReportRequest(to_string(report), format), NOK);
-}
-
-struct XmlTaxServiceTests : TaxServiceTests {
-    const types::ReportFormat format = types::ReportFormat::Xml;
-};
-
-TEST_F(XmlTaxServiceTests, onReportRequest_whenValidData_returnsOK)
-{
-    const std::string report = "<report><payer>2</payer><tax>VAT</tax><amount>10</amount><year>2020</"
-                               "year></report>";
-    ASSERT_EQ(sut.onReportRequest(report, format), OK);
-}
-
-TEST_F(XmlTaxServiceTests, onReportRequest_whenMissingFields_returnsNOK)
-{
-    const std::string report = "<report><payer>2</payer><year>2020</year></report>";
-    ASSERT_EQ(sut.onReportRequest(report, format), NOK);
-}
-
-TEST_F(XmlTaxServiceTests, onReportRequest_whenEmptyReport_returnsNOK)
-{
-    const std::string report = "";
-    ASSERT_EQ(sut.onReportRequest(report, format), NOK);
-}
-
-TEST_F(XmlTaxServiceTests, onReportRequest_whenInvalidXml_returnsNOK)
-{
-    const std::string report = "<<report>>";
-    ASSERT_EQ(sut.onReportRequest(report, format), NOK);
-}
-
-TEST_F(XmlTaxServiceTests, onReportRequest_whenNumericDataInvalid_returnsNOK)
-{
-    const std::string report = "<report><payer>Two</payer><tax>VAT</tax><amount>One</"
-                               "amount><year>Three</year></report>";
-    ASSERT_EQ(sut.onReportRequest(report, format), NOK);
+    EXPECT_CALL(*parserMockPtr, parse(rawReport)).WillOnce(Return(std::nullopt));
+    ASSERT_EQ(sut->onReportRequest(rawReport), NOK);
 }

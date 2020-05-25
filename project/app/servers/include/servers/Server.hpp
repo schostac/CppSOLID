@@ -1,13 +1,14 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 
-namespace types {
-enum class ReportFormat;
-} // namespace types
+namespace services {
+class ITaxServiceFactory;
+} // namespace services
 
 namespace servers {
 using Port = std::uint16_t;
 
-void runServer(Port, types::ReportFormat);
+void runServer(Port, std::unique_ptr<services::ITaxServiceFactory>);
 } // namespace servers

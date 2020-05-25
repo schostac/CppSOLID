@@ -10,4 +10,6 @@ struct Report {
     const double amount;
     const std::uint16_t year;
 };
+
+bool operator==(const Report&, const Report&);
 } // namespace types
