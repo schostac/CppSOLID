@@ -4,20 +4,21 @@
 
 #include <memory>
 
+#include "auth/IAuthorization.hpp"
+#include "parsers/IReportParser.hpp"
 #include "storage/ReportsStorage.hpp"
-
-namespace parsers {
-class IReportParser;
-} // namespace parsers
+#include "types/User.hpp"
 
 namespace services {
 class TaxService : public ITaxService {
 public:
-    TaxService(std::unique_ptr<parsers::IReportParser>);
+    TaxService(const types::User&, const auth::IAuthorization&, const parsers::IReportParser&);
     ReportStatus onReportRequest(const std::string_view) override;
 
 private:
-    std::unique_ptr<parsers::IReportParser> reportParser;
+    const types::User& user;
+    const auth::IAuthorization& authManager;
+    const parsers::IReportParser& reportParser;
     storage::ReportsStorage storage;
 };
 } // namespace services

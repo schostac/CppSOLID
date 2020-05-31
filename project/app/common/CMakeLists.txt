@@ -4,8 +4,10 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(SOURCE
     ${PROJECT_SOURCE_DIR}/include/constants/Constants.hpp
+    ${PROJECT_SOURCE_DIR}/include/types/User.hpp
     ${PROJECT_SOURCE_DIR}/include/types/Report.hpp
     ${PROJECT_SOURCE_DIR}/include/types/ReportFormat.hpp
+    ${PROJECT_SOURCE_DIR}/src/types/User.cpp
     ${PROJECT_SOURCE_DIR}/src/types/Report.cpp
     ${PROJECT_SOURCE_DIR}/src/types/ReportFormat.cpp
 )

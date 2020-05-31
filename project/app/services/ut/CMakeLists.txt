@@ -10,6 +10,6 @@ set(SOURCE
 
 add_executable(${PROJECT_NAME} ${SOURCE})
 
-target_link_libraries(${PROJECT_NAME} GTest::GTest GTest::Main gmock Services External Common)
+target_link_libraries(${PROJECT_NAME} GTest::GTest GTest::Main gmock Mocks Services Auth External Common)
 
 add_test(${PROJECT_NAME} ${PROJECT_NAME})

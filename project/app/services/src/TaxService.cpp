@@ -1,19 +1,20 @@
 #include "services/TaxService.hpp"
 
 #include "constants/Constants.hpp"
-#include "parsers/IReportParser.hpp"
 
 namespace services {
-TaxService::TaxService(std::unique_ptr<parsers::IReportParser> reportParser)
-    : reportParser{ std::move(reportParser) }
+TaxService::TaxService(
+    const types::User& user, const auth::IAuthorization& authManager, const parsers::IReportParser& reportParser)
+    : user{ user }
+    , authManager{ authManager }
+    , reportParser{ reportParser }
 {
-    if (this->reportParser == nullptr)
-        throw std::runtime_error{ "Unexpected null report parser" };
 }
 
 ReportStatus TaxService::onReportRequest(const std::string_view request)
 {
-    if (const auto report = reportParser->parse(request); report != std::nullopt) {
+    const auto report = reportParser.parseReport(request);
+    if (report != std::nullopt and authManager.isAuthorized(user.login, report->payer)) {
         storage.storeReport(*report);
         return constants::OK;
     }

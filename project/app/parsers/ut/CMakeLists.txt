@@ -5,8 +5,8 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
 set(SOURCE
-    JsonReportParser_tests.cpp
-    XmlReportParser_tests.cpp
+    JsonParser_tests.cpp
+    XmlParser_tests.cpp
     ValidatedReportParser_tests
 )
 

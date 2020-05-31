@@ -1,4 +1,4 @@
-#include "parsers/XmlReportParser.hpp"
+#include "parsers/XmlParser.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -19,7 +19,7 @@ template <typename T> auto getFromXml(const tinyxml2::XMLNode* node, const char*
 } // namespace
 
 namespace parsers {
-std::optional<types::Report> XmlReportParser::parse(const std::string_view rawReport) const try {
+std::optional<types::Report> XmlParser::parseReport(const std::string_view rawReport) const try {
     tinyxml2::XMLDocument doc;
     doc.Parse(rawReport.data(), rawReport.length());
 
@@ -30,6 +30,21 @@ std::optional<types::Report> XmlReportParser::parse(const std::string_view rawRe
             getFromXml<double>(root, "amount"),
             getFromXml<std::uint16_t>(root, "year"),
         };
+    }
+
+    return std::nullopt;
+} catch (const std::exception& e) {
+    std::cerr << __FILE__ << ' ' << e.what() << '\n';
+    return std::nullopt;
+}
+
+std::optional<types::User> XmlParser::parseCredentials(const std::string_view rawCredentials) const try {
+    tinyxml2::XMLDocument doc;
+    doc.Parse(rawCredentials.data(), rawCredentials.length());
+
+    if (tinyxml2::XMLNode* root = doc.FirstChild()) {
+        return types::User{ { getFromXml<std::string>(root, "login") },
+            { getFromXml<std::string>(root, "password") } };
     }
 
     return std::nullopt;

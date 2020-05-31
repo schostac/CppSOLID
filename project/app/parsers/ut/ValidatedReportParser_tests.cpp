@@ -7,15 +7,15 @@
 
 #include "constants/Constants.hpp"
 #include "nlohmann/json.hpp"
-#include "parsers/JsonReportParser.hpp"
-#include "parsers/XmlReportParser.hpp"
+#include "parsers/JsonParser.hpp"
+#include "parsers/XmlParser.hpp"
 #include "types/Report.hpp"
 
 using json = nlohmann::json;
 
 namespace parsers {
 struct ValidatedReportParserTests : testing::Test {
-    const ValidatedReportParser<JsonReportParser> sut;
+    const ValidatedReportParser<JsonParser> sut;
 
     const std::string taxName = *constants::validTaxNames.begin();
 
@@ -28,11 +28,11 @@ struct ValidatedReportParserTests : testing::Test {
               to_string(json{ { "payer", 1 }, { "tax", "Unknown tax" }, { "amount", 0 }, { "year", 2020 } }) };
 };
 
-TEST_F(ValidatedReportParserTests, reportValidationSucceeds) { ASSERT_NE(sut.parse(validReport), std::nullopt); }
+TEST_F(ValidatedReportParserTests, reportValidationSucceeds) { ASSERT_NE(sut.parseReport(validReport), std::nullopt); }
 
 TEST_F(ValidatedReportParserTests, reportValidationFails)
 {
     for (const auto& invalidReport : invalidReports)
-        ASSERT_EQ(sut.parse(invalidReport), std::nullopt);
+        ASSERT_EQ(sut.parseReport(invalidReport), std::nullopt);
 }
 } // namespace parsers
