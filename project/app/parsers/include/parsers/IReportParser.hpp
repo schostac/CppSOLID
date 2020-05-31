@@ -9,6 +9,6 @@ namespace parsers {
 class IReportParser {
 public:
     virtual ~IReportParser() = default;
-    virtual std::optional<types::Report> parse(const std::string_view) const = 0;
+    virtual std::optional<types::Report> parseReport(const std::string_view) const = 0;
 };
 } // namespace parsers

@@ -1,14 +1,17 @@
 #pragma once
 
+#include "auth/IAuthorization.hpp"
+#include "parsers/IReportParser.hpp"
 #include "services/ITaxServiceFactory.hpp"
 
 namespace services {
 class TaxServiceFactory : public ITaxServiceFactory {
 public:
-    TaxServiceFactory(types::ReportFormat);
-    std::unique_ptr<ITaxService> create() const override;
+    TaxServiceFactory(const auth::IAuthorization&, const parsers::IReportParser&);
+    std::unique_ptr<ITaxService> create(const types::User&) const override;
 
 private:
-    const types::ReportFormat reportFormat;
+    const auth::IAuthorization& authManager;
+    const parsers::IReportParser& reportParser;
 };
 } // namespace services

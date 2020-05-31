@@ -4,9 +4,11 @@
 #include <optional>
 #include <string>
 
-#include "ReportParserMock.hpp"
 #include "constants/Constants.hpp"
+#include "mocks/AuthorizationMock.hpp"
+#include "mocks/ReportParserMock.hpp"
 #include "types/Report.hpp"
+#include "types/User.hpp"
 
 using namespace constants;
 using ::testing::Return;
@@ -15,27 +17,36 @@ using ::testing::StrictMock;
 struct TaxServiceTests : testing::Test {
 
     TaxServiceTests()
+        : sut(user, authMock, parserMock)
     {
-        auto parserMock = std::make_unique<StrictMock<parsers::ReportParserMock>>();
-        parserMockPtr = parserMock.get();
-        sut = std::make_unique<services::TaxService>(std::move(parserMock));
     }
 
-    StrictMock<parsers::ReportParserMock>* parserMockPtr;
-    std::unique_ptr<services::ITaxService> sut;
+    types::User user;
+    StrictMock<auth::AuthorizationMock> authMock;
+    StrictMock<parsers::ReportParserMock> parserMock;
+    services::TaxService sut;
 
     const std::string_view rawReport = "{}";
-    const types::Report report{ 0, "", 0, 0 };
+    const types::Report report{ 10, "VAT", 20, 2020 };
 };
 
-TEST_F(TaxServiceTests, whenReportParserReturnsReport_returnOK)
+TEST_F(TaxServiceTests, whenReportParsingAndAuthorizationSucceed_returnOK)
 {
-    EXPECT_CALL(*parserMockPtr, parse(rawReport)).WillOnce(Return(report));
-    ASSERT_EQ(sut->onReportRequest(rawReport), OK);
+    EXPECT_CALL(authMock, isAuthorized(user.login, report.payer)).WillOnce(Return(true));
+    EXPECT_CALL(parserMock, parseReport(rawReport)).WillOnce(Return(report));
+    ASSERT_EQ(sut.onReportRequest(rawReport), OK);
 }
 
-TEST_F(TaxServiceTests, whenReportParserReturnsNull_returnNOK)
+TEST_F(TaxServiceTests, whenReportParsingFails_returnNOK)
 {
-    EXPECT_CALL(*parserMockPtr, parse(rawReport)).WillOnce(Return(std::nullopt));
-    ASSERT_EQ(sut->onReportRequest(rawReport), NOK);
+    EXPECT_CALL(parserMock, parseReport(rawReport)).WillOnce(Return(std::nullopt));
+    EXPECT_CALL(authMock, isAuthorized(user.login, report.payer)).Times(0);
+    ASSERT_EQ(sut.onReportRequest(rawReport), NOK);
+}
+
+TEST_F(TaxServiceTests, whenAuthorizationFails_returnNOK)
+{
+    EXPECT_CALL(parserMock, parseReport(rawReport)).WillOnce(Return(report));
+    EXPECT_CALL(authMock, isAuthorized(user.login, report.payer)).WillOnce(Return(false));
+    ASSERT_EQ(sut.onReportRequest(rawReport), NOK);
 }

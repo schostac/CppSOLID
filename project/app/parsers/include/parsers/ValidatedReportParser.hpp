@@ -8,6 +8,6 @@ namespace parsers {
 template <typename BaseReportParser> class ValidatedReportParser : public BaseReportParser {
 public:
     static_assert(std::is_base_of<IReportParser, BaseReportParser>::value);
-    std::optional<types::Report> parse(const std::string_view) const override;
+    std::optional<types::Report> parseReport(const std::string_view) const override;
 };
 } // namespace parsers

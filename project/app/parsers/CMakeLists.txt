@@ -7,12 +7,16 @@ add_subdirectory(ut)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(SOURCE
+    ${PROJECT_SOURCE_DIR}/include/parsers/IParsersFactory.hpp
+    ${PROJECT_SOURCE_DIR}/include/parsers/ICredentialsParser.hpp
     ${PROJECT_SOURCE_DIR}/include/parsers/IReportParser.hpp
-    ${PROJECT_SOURCE_DIR}/include/parsers/JsonReportParser.hpp
-    ${PROJECT_SOURCE_DIR}/include/parsers/XmlReportParser.hpp
+    ${PROJECT_SOURCE_DIR}/include/parsers/ParsersFactory.hpp
+    ${PROJECT_SOURCE_DIR}/include/parsers/JsonParser.hpp
+    ${PROJECT_SOURCE_DIR}/include/parsers/XmlParser.hpp
     ${PROJECT_SOURCE_DIR}/include/parsers/ValidatedReportParser.hpp
-    ${PROJECT_SOURCE_DIR}/src/XmlReportParser.cpp
-    ${PROJECT_SOURCE_DIR}/src/JsonReportParser.cpp
+    ${PROJECT_SOURCE_DIR}/src/ParsersFactory.cpp
+    ${PROJECT_SOURCE_DIR}/src/XmlParser.cpp
+    ${PROJECT_SOURCE_DIR}/src/JsonParser.cpp
     ${PROJECT_SOURCE_DIR}/src/ValidatedReportParser.cpp
 )
 

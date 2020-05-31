@@ -17,6 +17,6 @@ set(SOURCE
 
 add_library(${PROJECT_NAME} STATIC ${SOURCE})
 
-target_link_libraries(${PROJECT_NAME} Parsers Common Storage)
+target_link_libraries(${PROJECT_NAME} Parsers Common Auth Storage)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)

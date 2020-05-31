@@ -6,4 +6,4 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME} Main.cpp)
 
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} Configs Common Services Servers)
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} Configs Common Auth Parsers Services Servers)
