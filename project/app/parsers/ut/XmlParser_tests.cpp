@@ -45,7 +45,7 @@ TEST_F(XmlParserTests, whenNumericDataInvalid_parseReportReturnsNull)
     ASSERT_EQ(sut.parseReport(xmlReport), std::nullopt);
 }
 
-TEST_F(XmlParserTests, whenValidData_parseCredentialsReturnsReport)
+TEST_F(XmlParserTests, whenValidData_parseCredentialsReturnsUser)
 {
     const std::string xmlReport = "<credentials><login>Jhon Doe</login>"
                                   "<password>123</password></credentials>";

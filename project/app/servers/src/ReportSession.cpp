@@ -11,7 +11,7 @@ std::size_t read(tcp::socket& sock, char* buf, const std::size_t n)
 {
     boost::system::error_code error;
     const auto readLength = sock.read_some(boost::asio::buffer(buf, n), error);
-    std::cout << "Received " << readLength << " bytes" << std::endl;
+    std::cout << "Received " << readLength << " bytes\n";
 
     if (error == boost::asio::error::eof)
         return 0; // Connection closed cleanly by peer.
@@ -55,8 +55,7 @@ void ReportSession::start() try {
     } else {
         boost::asio::write(sock, boost::asio::buffer(constants::NOK.data(), constants::NOK.size()));
         stop();
-        std::cerr << __FILE__ << " Failed to login a user for tax reporting"
-                  << "\n";
+        std::cerr << __FILE__ << " Failed to login a user for tax reporting\n";
     }
 } catch (const std::exception& e) {
     std::cerr << e.what() << "\n";
@@ -64,15 +63,15 @@ void ReportSession::start() try {
 
 void ReportSession::stop()
 {
-    boost::system::error_code ec;
+    boost::system::error_code error;
     sock.shutdown(boost::asio::ip::tcp::socket::shutdown_both); // Disable sends and receives on the socket
-    if (not ec) {
-        sock.close(ec);
-        if (ec) {
-            std::cerr << __FILE__ << " Error when closing socket " << ec << '\n';
+    if (not error) {
+        sock.close(error);
+        if (error) {
+            std::cerr << __FILE__ << " Error when closing socket " << error << '\n';
         }
     } else {
-        std::cerr << __FILE__ << " Error when shutting down socket " << ec << '\n';
+        std::cerr << __FILE__ << " Error when shutting down socket " << error << '\n';
     }
 }
 } // namespace servers

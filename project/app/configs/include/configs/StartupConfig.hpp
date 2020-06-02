@@ -18,8 +18,13 @@ struct StartupConfig {
 std::optional<const StartupConfig> optionsToStartupConfig(int argc, char* argv[])
 {
     po::options_description desc("Allowed options");
-    desc.add_options()("help", "Produce help message")("port", po::value<std::uint16_t>(), "Set server port")(
-        "format", po::value<types::ReportFormat>(), "Set tax report format (json or xml)");
+
+    // clang-format off
+    desc.add_options()
+        ("help", "Produce help message")
+        ("port", po::value<std::uint16_t>(), "Set server port")
+        ("format", po::value<types::ReportFormat>(), "Set tax report format (json or xml)");
+    // clang-format on
 
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);

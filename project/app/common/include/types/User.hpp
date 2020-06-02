@@ -6,11 +6,11 @@
 
 namespace types {
 struct Login {
-    std::string value;
+    const std::string value;
 };
 
 struct Password {
-    std::string value; // kept hashed in real applications
+    const std::string value; // kept hashed in real applications
 };
 
 struct User {

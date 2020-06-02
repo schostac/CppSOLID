@@ -23,7 +23,7 @@ std::optional<types::Report> XmlParser::parseReport(const std::string_view rawRe
     tinyxml2::XMLDocument doc;
     doc.Parse(rawReport.data(), rawReport.length());
 
-    if (tinyxml2::XMLNode* root = doc.FirstChild()) {
+    if (const tinyxml2::XMLNode* root = doc.FirstChild()) {
         return types::Report{
             getFromXml<std::uint32_t>(root, "payer"),
             getFromXml<std::string>(root, "tax"),
@@ -42,9 +42,11 @@ std::optional<types::User> XmlParser::parseCredentials(const std::string_view ra
     tinyxml2::XMLDocument doc;
     doc.Parse(rawCredentials.data(), rawCredentials.length());
 
-    if (tinyxml2::XMLNode* root = doc.FirstChild()) {
-        return types::User{ { getFromXml<std::string>(root, "login") },
-            { getFromXml<std::string>(root, "password") } };
+    if (const tinyxml2::XMLNode* root = doc.FirstChild()) {
+        return types::User{
+            { getFromXml<std::string>(root, "login") },
+            { getFromXml<std::string>(root, "password") },
+        };
     }
 
     return std::nullopt;

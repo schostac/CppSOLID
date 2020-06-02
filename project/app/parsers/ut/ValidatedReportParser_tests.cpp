@@ -22,13 +22,19 @@ struct ValidatedReportParserTests : testing::Test {
     const std::string validReport
         = to_string(json{ { "payer", 1 }, { "tax", taxName }, { "amount", 1000 }, { "year", 2020 } });
 
-    const std::vector<std::string> invalidReports
-        = { to_string(json{ { "payer", 1 }, { "tax", taxName }, { "amount", 0.0 }, { "year", 2020 } }),
-              to_string(json{ { "payer", 1 }, { "tax", taxName }, { "amount", 1000 }, { "year", 2222 } }),
-              to_string(json{ { "payer", 1 }, { "tax", "Unknown tax" }, { "amount", 0 }, { "year", 2020 } }) };
+    const std::vector<std::string> invalidReports = {
+        to_string(json{ { "payer", 1 }, { "tax", taxName }, { "amount", 0.0 }, { "year", 2020 } }),
+        to_string(json{ { "payer", 1 }, { "tax", taxName }, { "amount", 1000 }, { "year", 2222 } }),
+        to_string(json{ { "payer", 1 }, { "tax", "Unknown tax" }, { "amount", 0 }, { "year", 2020 } }),
+    };
 };
 
-TEST_F(ValidatedReportParserTests, reportValidationSucceeds) { ASSERT_NE(sut.parseReport(validReport), std::nullopt); }
+// clang-format off
+TEST_F(ValidatedReportParserTests, reportValidationSucceeds)
+{
+    ASSERT_NE(sut.parseReport(validReport), std::nullopt);
+}
+// clang-format on
 
 TEST_F(ValidatedReportParserTests, reportValidationFails)
 {
