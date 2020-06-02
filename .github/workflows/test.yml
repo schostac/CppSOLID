@@ -30,4 +30,4 @@ jobs:
         cmake ../project/app/
         make -j4
         valgrind make test
-        python3 ../project/tests/sct/tests.py
+        seq 3 | xargs -I -- python3 ../project/tests/sct/tests.py

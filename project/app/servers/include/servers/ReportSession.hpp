@@ -12,7 +12,7 @@ using boost::asio::ip::tcp;
 
 namespace types {
 struct User;
-} // namespace services
+} // namespace types
 
 namespace servers {
 class ReportSession {
