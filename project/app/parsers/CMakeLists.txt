@@ -7,9 +7,6 @@ add_subdirectory(ut)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(SOURCE
-    ${PROJECT_SOURCE_DIR}/include/parsers/IParsersFactory.hpp
-    ${PROJECT_SOURCE_DIR}/include/parsers/ICredentialsParser.hpp
-    ${PROJECT_SOURCE_DIR}/include/parsers/IReportParser.hpp
     ${PROJECT_SOURCE_DIR}/include/parsers/ParsersFactory.hpp
     ${PROJECT_SOURCE_DIR}/include/parsers/JsonParser.hpp
     ${PROJECT_SOURCE_DIR}/include/parsers/XmlParser.hpp
@@ -22,6 +19,6 @@ set(SOURCE
 
 add_library(${PROJECT_NAME} STATIC ${SOURCE})
 
-target_link_libraries(${PROJECT_NAME} Common External)
+target_link_libraries(${PROJECT_NAME} Common External Interfaces)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)

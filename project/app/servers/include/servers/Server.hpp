@@ -11,5 +11,5 @@ namespace servers {
 using Port = std::uint16_t;
 
 void runServer(
-    Port port, const auth::IAuthentication&, const parsers::ICredentialsParser&, const services::ITaxServiceFactory&);
+    Port, const auth::IAuthentication&, const parsers::ICredentialsParser&, const services::ITaxServiceFactory&);
 } // namespace servers

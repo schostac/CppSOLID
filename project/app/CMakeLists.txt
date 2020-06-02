@@ -8,6 +8,7 @@ SET(CMAKE_CXX_FLAGS "-std=c++17 -O3 -pedantic -Wall -Werror")
 enable_testing()
 
 add_subdirectory(external)
+add_subdirectory(interfaces)
 add_subdirectory(common)
 add_subdirectory(configs)
 add_subdirectory(servers)

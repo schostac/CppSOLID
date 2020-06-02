@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IAuthentication.hpp"
-#include "IAuthorization.hpp"
+#include "auth/IAuthentication.hpp"
+#include "auth/IAuthorization.hpp"
 
 #include <functional>
 #include <set>
