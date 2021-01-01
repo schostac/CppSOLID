@@ -1,0 +1,11 @@
+Prerequisites for the course
+
+1. Mandatory:
+- Beginner or intermediate C++, but not complete beginner.
+  In other words, at least strong basic C++ knowledge is required.
+- Basics of OOP (classes, polymorphism, inheritance, encapsulation, etc.)
+
+2. Optional:
+- Familiarity with features of modern C++ (C++11 on, project is in C++17).
+- Basic Linux skills (we use GCC (GNU Compiler Collection)).
+- Basic Cmake skills

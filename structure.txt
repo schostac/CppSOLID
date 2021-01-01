@@ -1,0 +1,78 @@
+Structure of the course
+
+1. Introduction
+- Welcome
+- Overview
+- What is SOLID?
+- Project repository, environment and CI
+- Project intro with C++17 and Boost.Asio (synchronous, TCP)
+- Project code (version before)
+- Project after (version after) - check commits for details
+- Quiz
+
+2. UML
+- UML introduction
+- Class diagrams
+- Creating class diagrams with Umbrello
+- Quiz
+
+3. Single responsibility principle (SRP)
+- Presentation: SRP intro
+- Presentation: SRP violation and compliance
+- Presentation: how to apply
+- UML SRP incompliant example
+- UML SRP compliant example
+- Project code before SRP
+- Project code after SRP
+- Quiz
+
+4. Open-closed principle (OCP)
+- Presentation: OCP intro
+- Presentation: OCP violation and compliance
+- Presentation: how to apply
+- UML OCP incompliant example
+- UML OCP compliant example
+- Project code before OCP
+- Project code after OCP
+- Quiz
+
+5. Liskov substitution principle (LSP)
+- Presentation: LSP intro
+- Presentation: LSP violation and compliance
+- Presentation: how to apply
+- UML LSP incompliant example
+- UML LSP compliant example
+- Project code before LSP
+- Project code after LSP
+- Quiz
+
+6. Interface segregation principle (ISP)
+- Presentation: ISP intro
+- Presentation: ISP violation and compliance
+- Presentation: how to apply
+- UML ISP incompliant example
+- UML ISP compliant example
+- Project code before ISP
+- Project code after ISP
+- Quiz
+
+7. Dependency inversion principle (DIP)
+- Presentation: DIP intro
+- Presentation: DIP violation and compliance
+- Presentation: how to apply
+- UML DIP incompliant example
+- UML DIP compliant example
+- Project code before DIP
+- Project code after DIP
+- Quiz
+
+8. Not only dynamic polymorphism
+- Project code: examples with templates
+- https://stackoverflow.com/questions/43576556/dependency-inversion-from-s-o-l-i-d-principles-in-c
+
+9. Bonus
+- Project with Boost.Asio: asynchronous
+- Project with Boost.Asiso: asynchronous with C++20 coroutines
+
+10. Assignment
+- Download, build, analyze, play with, improve and/or exted the project
