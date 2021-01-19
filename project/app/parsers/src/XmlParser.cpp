@@ -19,7 +19,7 @@ template <typename T> auto getFromXml(const tinyxml2::XMLNode* node, const char*
 } // namespace
 
 namespace parsers {
-std::optional<types::Report> XmlParser::parseReport(const std::string_view rawReport) const try {
+std::optional<types::Report> XmlParser::parseReport(const std::string& rawReport) const try {
     tinyxml2::XMLDocument doc;
     doc.Parse(rawReport.data(), rawReport.length());
 
@@ -38,7 +38,7 @@ std::optional<types::Report> XmlParser::parseReport(const std::string_view rawRe
     return std::nullopt;
 }
 
-std::optional<types::User> XmlParser::parseCredentials(const std::string_view rawCredentials) const try {
+std::optional<types::User> XmlParser::parseCredentials(const std::string& rawCredentials) const try {
     tinyxml2::XMLDocument doc;
     doc.Parse(rawCredentials.data(), rawCredentials.length());
 

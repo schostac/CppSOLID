@@ -1,7 +1,7 @@
 #include "auth/AuthManager.hpp"
 
 namespace {
-const types::Login dummyLogin{ "Jhon Doe" };
+const types::Login dummyLogin{ "John Doe" };
 const types::Password dummyPassword{ "@12345" };
 const std::set<std::uint32_t> dummyTaxpayerIds{ 1, 2, 3, 4, 5, 5, 6, 8, 9, 10 };
 } // namespace

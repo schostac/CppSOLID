@@ -6,7 +6,7 @@
 #include "nlohmann/json.hpp"
 
 namespace parsers {
-std::optional<types::Report> JsonParser::parseReport(const std::string_view rawReport) const try {
+std::optional<types::Report> JsonParser::parseReport(const std::string& rawReport) const try {
     if (const auto json = nlohmann::json::parse(rawReport); not json.empty()) {
         return types::Report{ json.at("payer"), json.at("tax"), json.at("amount"), json.at("year") };
     }
@@ -17,7 +17,7 @@ std::optional<types::Report> JsonParser::parseReport(const std::string_view rawR
     return std::nullopt;
 }
 
-std::optional<types::User> JsonParser::parseCredentials(const std::string_view rawCredentials) const try {
+std::optional<types::User> JsonParser::parseCredentials(const std::string& rawCredentials) const try {
     if (const auto json = nlohmann::json::parse(rawCredentials); not json.empty()) {
         return types::User{ { json.at("login") }, { json.at("password") } };
     }

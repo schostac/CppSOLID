@@ -13,7 +13,7 @@ namespace services {
 class TaxService : public ITaxService {
 public:
     TaxService(const types::User&, const auth::IAuthorization&, const parsers::IReportParser&);
-    ReportStatus onReportRequest(const std::string_view) override;
+    ReportStatus onReportRequest(const std::string) override;
 
 private:
     const types::User& user;

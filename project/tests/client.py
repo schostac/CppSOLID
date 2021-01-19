@@ -19,7 +19,14 @@ def socketcontext(*args, **kwargs):
 
 with socketcontext(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.connect((TCP_IP, TCP_PORT))
-    request = """<report><payer>100</payer><tax>Corporate Income Tax</tax>
+
+    request = """<credentials><login>John Doe</login>
+                 <password>@12345</password></credentials>"""
+    sock.send(request.encode())
+    response = sock.recv(BUFFER_SIZE)
+    print(response.decode())
+
+    request = """<report><payer>1</payer><tax>Corporate Income Tax</tax>
                 <amount>25000</amount><year>2020</year></report>"""
     sock.send(request.encode())
     response = sock.recv(BUFFER_SIZE)

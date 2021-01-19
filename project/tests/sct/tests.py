@@ -3,32 +3,33 @@ import os
 import socket
 import subprocess
 import time
+import random
 import unittest
 import select
 from pathlib import Path
 
 TCP_IP = 'localhost'
-TCP_PORT = 7788
 BUFFER_SIZE = 1024
 OK = 'OK'
 NOK = 'NOK'
 
 # Credentials are hardcoded in the application
-LOGIN = 'Jhon Doe'
+LOGIN = 'John Doe'
 PASSWORD = "@12345"
 
 # For formatting, use
 # yapf --in-place --recursive --style="{ based_on_style: pep8, column_limit: 120 }" .
 
-
 class TestsBase:
     def setUp(self):
+        # TODO: pass binary path as a command line argument
         binary = Path(__file__).absolute().parents[3] / Path('./build/main/Main')
-        command = 'exec {} --port {} --format {}'.format(binary, TCP_PORT, self.report_format)
+        self.TCP_PORT = random.randint(7000, 8000)
+        command = '{} --port {} --format {}'.format(binary, self.TCP_PORT, self.REPORT_FORMAT)
         self.process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
         time.sleep(0.1)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect((TCP_IP, TCP_PORT))
+        self.sock.connect((TCP_IP, self.TCP_PORT))
 
     def tearDown(self):
         self.sock.close()
@@ -38,7 +39,7 @@ class TestsBase:
 
 
 class JsonTaxReportTests(TestsBase, unittest.TestCase):
-    report_format = 'json'
+    REPORT_FORMAT = 'json'
 
     def login(self, sock=None):
         sock = sock or self.sock
@@ -60,10 +61,10 @@ class JsonTaxReportTests(TestsBase, unittest.TestCase):
 
     def test_sending_tax_reports_from_multiple_clients_succeeds(self):
         self.sock2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock2.connect((TCP_IP, TCP_PORT))
+        self.sock2.connect((TCP_IP, self.TCP_PORT))
 
         self.sock3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock3.connect((TCP_IP, TCP_PORT))
+        self.sock3.connect((TCP_IP, self.TCP_PORT))
 
         for i, sock in enumerate([self.sock, self.sock2, self.sock3]):
             self.login(sock)
@@ -96,8 +97,11 @@ class JsonTaxReportTests(TestsBase, unittest.TestCase):
         self.sock.send(json.dumps({'login': LOGIN + 'x', 'password': PASSWORD + 'y'}).encode())
         self.assertEqual(self.sock.recv(BUFFER_SIZE).decode(), NOK)
 
-        self.sock.send(json.dumps({}).encode())
-        self.assertEqual(len(self.sock.recv(BUFFER_SIZE)), 0)
+        try:
+            self.sock.send(json.dumps({}).encode())
+            self.assertEqual(len(self.sock.recv(BUFFER_SIZE)), 0)
+        except ConnectionAbortedError:
+            pass
 
     def test_sending_tax_report_fails_due_to_invalid_taxpayer_id(self):
         self.login()
@@ -117,7 +121,7 @@ class JsonTaxReportTests(TestsBase, unittest.TestCase):
 
 
 class XmlTaxReportTests(TestsBase, unittest.TestCase):
-    report_format = 'xml'
+    REPORT_FORMAT = 'xml'
 
     def login(self):
         request = """<credentials><login>{}</login>
