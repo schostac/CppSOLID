@@ -28,7 +28,7 @@ bool validateTaxYear(const types::Report& report)
 namespace parsers {
 template <typename BaseReportParser>
 std::optional<types::Report> ValidatedReportParser<BaseReportParser>::parseReport(
-    const std::string_view rawReport) const try {
+    const std::string& rawReport) const try {
     if (const auto report = BaseReportParser::parseReport(rawReport)) {
         if (report->amount > 0.0 and validateTaxYear(*report)) {
             std::string tax = report->tax;

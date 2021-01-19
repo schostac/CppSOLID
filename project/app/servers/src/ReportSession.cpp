@@ -50,6 +50,8 @@ void ReportSession::start() try {
             if (const auto length = read(sock, data, MAX_LENGTH)) {
                 const auto response = taxService->onReportRequest({ data, length });
                 boost::asio::write(sock, boost::asio::buffer(response.data(), response.size()));
+            } else {
+               return stop();
             }
         }
     } else {
@@ -58,10 +60,10 @@ void ReportSession::start() try {
         std::cerr << __FILE__ << " Failed to login a user for tax reporting\n";
     }
 } catch (const std::exception& e) {
-    std::cerr << e.what() << "\n";
+    std::cerr << __FILE__ << " " << __LINE__ << " "  << e.what() << std::endl;
 }
 
-void ReportSession::stop()
+void ReportSession::stop() try
 {
     boost::system::error_code error;
     sock.shutdown(boost::asio::ip::tcp::socket::shutdown_both); // Disable sends and receives on the socket
@@ -73,5 +75,8 @@ void ReportSession::stop()
     } else {
         std::cerr << __FILE__ << " Error when shutting down socket " << error << '\n';
     }
+}
+catch (const std::exception& e) {
+    std::cerr << __FILE__ << " " << __LINE__ << " " << e.what() << std::endl;
 }
 } // namespace servers

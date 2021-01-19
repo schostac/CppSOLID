@@ -1,7 +1,7 @@
 #include "services/TaxService.hpp"
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <optional>
 #include <string>
@@ -28,7 +28,7 @@ struct TaxServiceTests : testing::Test {
     StrictMock<parsers::ReportParserMock> parserMock;
     services::TaxService sut;
 
-    const std::string_view rawReport = "{}";
+    const std::string rawReport = "{}";
     const types::Report report{ 10, "VAT", 20, 2020 };
 };
 
