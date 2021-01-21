@@ -1,0 +1,18 @@
+title Tax reporting sequence diagram
+
+note left of Client: Acts as a tax reporter
+note right of Server: Acts as a receiver of tax reports
+note over Client,Server: TCP connection opened
+Client->Server: Authentication request (login, password, tax payer ids)
+Server->Client: Response (OK, NOK)
+opt If authentication response is OK
+    loop Sending tax reports
+        Client->Server: Tax report request in JSON or XML (payer, tax name, amount, reporting year)
+        note right of Server
+            Server checks the report's format and data validity,
+            authorization, processes and stores the report.
+        end note
+        Server->Client: Response (OK, NOK)
+    end 
+end
+note over Client,Server: TCP connection closed

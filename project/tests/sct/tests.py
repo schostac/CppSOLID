@@ -7,27 +7,43 @@ import random
 import unittest
 import select
 from pathlib import Path
+"""
+The following are high-level tests for our server application
+that receives and handles tax reports of specified format
+subject to user authentication and authorization.
+"""
 
 TCP_IP = 'localhost'
 BUFFER_SIZE = 1024
 OK = 'OK'
 NOK = 'NOK'
 
-# Credentials are hardcoded in the application
+# Credentials are hardcoded in the application.
+# As an exercise, you can extend the application with the support for
+# registering users and storing their credentials in some kind of database.
 LOGIN = 'John Doe'
 PASSWORD = "@12345"
 
-# For formatting, use
+# For formatting, you can use
 # yapf --in-place --recursive --style="{ based_on_style: pep8, column_limit: 120 }" .
+
 
 class TestsBase:
     def setUp(self):
+        # 1. Prepare a command to start the server (bound to the provided port
+        # and accepting reports of the provided format (JSON, XML)
+
         # TODO: pass binary path as a command line argument
         binary = Path(__file__).absolute().parents[3] / Path('./build/main/Main')
-        self.TCP_PORT = random.randint(7000, 8000)
+        self.TCP_PORT = random.randint(3000, 9000)
         command = '{} --port {} --format {}'.format(binary, self.TCP_PORT, self.REPORT_FORMAT)
+
+        # 2. Create a subprocess and start the server
         self.process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
         time.sleep(0.1)
+
+        # 3. Create a TCP connection to the server
+        # so that we can send reports and receive replies.
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((TCP_IP, self.TCP_PORT))
 
@@ -143,6 +159,28 @@ class XmlTaxReportTests(TestsBase, unittest.TestCase):
         self.sock.send(request.encode())
         response = self.sock.recv(BUFFER_SIZE)
 
+        self.assertEqual(response.decode(), OK)
+
+    def test_sending_valid_and_invalid_tax_reports(self):
+        self.login()
+        valid_request = """<report>
+                               <payer>1</payer>
+                               <tax>Corporate Income Tax</tax>
+                               <amount>25000</amount>
+                               <year>2020</year>
+                           </report>"""
+
+        self.sock.send(valid_request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
+        self.assertEqual(response.decode(), OK)
+
+        invalid_request = 'Something not XML'
+        self.sock.send(invalid_request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
+        self.assertEqual(response.decode(), NOK)
+
+        self.sock.send(valid_request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
         self.assertEqual(response.decode(), OK)
 
     def test_sending_tax_report_fails_due_to_missing_data(self):
