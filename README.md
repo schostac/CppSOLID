@@ -1,5 +1,5 @@
 ![CI](https://github.com/AndriiShostatskyi/CppSOLID/workflows/CI/badge.svg)
 
 
-# C++ in Detail: SOLID
+# SOLID C++
 ##### Udemy course
