@@ -3,7 +3,7 @@
 
 /* Observer pattern example of DIP.
  * DIP is followed because we depend on abstractions instead of concrete implementations.
- * In this case we use dynamic polymorphism and inheritance.
+ * In this case we use static polymorphism and templates.
  * Note that we also have broken circular dependency.
  */
 

@@ -3,10 +3,9 @@
 
 /* Observer pattern example of DIP.
  * DIP is followed because we depend on abstractions instead of concrete implementations.
- * In this case we use static polymorphism and templates.
- * Note that we also have broken circular dependency.
- * But better to extract subscription from constructor of User,
- * and thus dependency on Forecast.
+ * In this case we use dynamic polymorphism (virtual functions and inheritance).
+ * Note that we also have circular dependency. It'd be better to extract subscription
+ * from constructor of User, and thus dependency on Forecast.
  */
 
 class Subscriber;
