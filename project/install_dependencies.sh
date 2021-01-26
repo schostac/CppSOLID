@@ -16,7 +16,6 @@ sudo make install -j4
 
 cd ../gmock
 sudo cmake CMakeLists.txt
-sudo make -j4
 sudo make install -j4
 
 cd $PROJECT_DIR
