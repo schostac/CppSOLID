@@ -2,4 +2,4 @@
 
 
 # SOLID C++
-##### Udemy course
+##### Udemy course https://www.udemy.com/course/solid-cpp/
